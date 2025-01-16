@@ -1,0 +1,89 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        List<Student> students = new ArrayList<>();
+
+        Student student1 = new Student("Алексей", 11, 1);
+        student1.addAssessments(5); student1.addAssessments(5); student1.addAssessments(5);
+
+        Student student2 = new Student("Борис", 22, 2);
+        student2.addAssessments(5); student2.addAssessments(5); student2.addAssessments(4);
+
+        Student student3 = new Student("Виктор", 33, 3);
+        student3.addAssessments(5); student3.addAssessments(4); student3.addAssessments(4);
+
+        Student student4 = new Student("Никита", 32, 3);
+        student4.addAssessments(2); student4.addAssessments(2); student4.addAssessments(2);
+
+        Student student5 = new Student("Дарья", 44, 4);
+        student5.addAssessments(4); student5.addAssessments(2); student5.addAssessments(2); student5.addAssessments(2);
+
+        Student student6 = new Student("Егор", 44, 4);
+        student6.addAssessments(4); student6.addAssessments(3); student6.addAssessments(2);
+
+        Student student7 = new Student("Илья", 44, 5);
+        student7.addAssessments(5); student7.addAssessments(5); student7.addAssessments(5); student7.addAssessments(4);
+
+        students.add(student1); students.add(student2);students.add(student3);students.add(student4);students.add(student5);students.add(student6);students.add(student7);
+
+        printStudents(students,1); printStudents(students,2); printStudents(students, 3);printStudents(students,4);printStudents(students, 5);
+
+        List <Student> promotedStudents = promotedStudents(students);
+        removeStudents(students);
+        for (Student student : students);
+
+        System.out.println("\nСтуденты, которые будут переведены на следующий курс:");
+        for (Student student: promotedStudents){
+            System.out.println(student.getName() + " будет переведен на " + student.getCourse() + " курс ");
+        }
+    }
+
+    public static void printStudents (List <Student> students, int course){
+        if (students == null || students.isEmpty()){
+            return;
+        }
+        System.out.println("Обучающиеся на" + ' ' + course + ' ' + "курсе:");
+
+        boolean sought = false;
+        for (Student student:students) {
+            if (student.getCourse() == course) {
+                System.out.println(student.getName());
+                sought = true;
+            }
+        }
+        if(!sought){
+            System.out.println("Нет обучающихся");
+        }
+    }
+
+    public static List <Student> promotedStudents (List <Student> students){
+        if (students == null){
+            return List.of();
+        }
+        return students.stream()
+                .filter(student -> {
+                    double averageAssessment = student.getAverageAssessment();
+                    if (averageAssessment >= 3 && student.getCourse()<5) {
+                        student.nextCourse();
+                        return true;
+                    }
+                    return false;
+                })
+                .collect(Collectors.toList());
+    }
+
+    public static void removeStudents(List<Student> students) {
+        if (students == null){
+            return;
+        }
+        students.removeIf(student -> student.getAverageAssessment() < 3);
+
+    }
+
+
+    }
